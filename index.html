@@ -1,0 +1,1497 @@
+<!--
+  ERIC MOTORS — KINGSTON Digital Business Card
+  =============================================
+  REPLACEABLE PLACEHOLDERS:
+  1. Email:         Search "kingstonchoo7673@gmail.com" — replace with real email
+  2. Avatar:        Search "AVATAR_PLACEHOLDER" — replace src with photo URL
+  3. Car images:    Each car has a placehold.co URL — replace with real photo URLs
+  4. Car details (per car, search by model name):
+     - Year:        Replace "20XX"
+     - Price:       Replace "RM XX,XXX"
+     - Mileage:     Replace "XX,XXX km"
+     - Description: Replace placeholder description text
+  5. Service area:  Search "Sarawak" if you need to change coverage region
+-->
+<!-- TODO: Replace kingstonchoo7673@gmail.com -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Kingston · Eric Motors Sdn. Bhd.</title>
+  <meta name="description" content="Kingston — Recond & Used Car Specialist at Eric Motors Sdn. Bhd., Miri." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============ RESET ============ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0d0d0d;
+      color: #e8e8ea;
+      overflow-x: hidden;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* ============ TOKENS ============ */
+    :root {
+      --bg: #0d0d0d;
+      --bg-alt: #1a1a2e;
+      --gold: #d4af37;
+      --gold-soft: #b8962e;
+      --silver: #c0c0c0;
+      --text: #e8e8ea;
+      --text-dim: #9a9aa3;
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --shadow-lg: 0 25px 60px -10px rgba(0, 0, 0, 0.7);
+      --shadow-glow: 0 0 30px rgba(212, 175, 55, 0.25);
+      --serif: 'Cormorant Garamond', Georgia, serif;
+    }
+
+    /* ============ BACKGROUND CANVAS ============ */
+    #particles {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(26, 26, 46, 0.8) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 100%, rgba(26, 26, 46, 0.6) 0%, transparent 50%),
+        #0d0d0d;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: clamp(1rem, 4vw, 3rem) clamp(1rem, 4vw, 2rem);
+    }
+
+    /* ============ LANGUAGE TOGGLE ============ */
+    .lang-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 100;
+      display: flex;
+      gap: 4px;
+      padding: 4px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .lang-btn {
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--text-dim);
+      border-radius: 999px;
+      transition: all 0.3s ease;
+    }
+    .lang-btn:hover { color: var(--text); }
+    .lang-btn.active {
+      background: linear-gradient(135deg, var(--gold), var(--gold-soft));
+      color: #0d0d0d;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    }
+
+    /* ============ PAGE FADE ============ */
+    .page-fade {
+      transition: opacity 0.35s ease;
+    }
+    .page-fade.fading {
+      opacity: 0;
+    }
+
+    /* ============ HEADLINE ============ */
+    .hero {
+      text-align: center;
+      padding-top: clamp(2.5rem, 6vw, 4rem);
+      margin-bottom: 2rem;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: ''; display: inline-block; width: 24px; height: 1px;
+      background: var(--gold); vertical-align: middle; margin: 0 12px;
+      opacity: 0.6;
+    }
+
+    /* ============ CARD SECTION (3D FLIP + PARALLAX) ============ */
+    .card-section {
+      display: flex;
+      justify-content: center;
+      perspective: 1500px;
+      padding: 1rem 0 2rem;
+    }
+    .card-perspective {
+      width: min(420px, 92vw);
+      height: 260px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.4);
+      will-change: transform;
+    }
+    @media (min-width: 700px) {
+      .card-perspective { width: 460px; height: 280px; }
+    }
+    .card-3d {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.9s cubic-bezier(0.6, 0.05, 0.3, 1);
+    }
+    .card-perspective:hover .card-3d,
+    .card-perspective.flipped .card-3d {
+      transform: rotateY(180deg);
+    }
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 18px;
+      padding: 1.5rem 1.6rem;
+      background:
+        linear-gradient(135deg, rgba(212, 175, 55, 0.06), rgba(192, 192, 192, 0.02)),
+        linear-gradient(180deg, #161622 0%, #0d0d15 100%);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+      overflow: hidden;
+    }
+    .card-face::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(212, 175, 55, 0.18), transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(192, 192, 192, 0.08), transparent 50%);
+      pointer-events: none;
+    }
+    .card-front { z-index: 2; }
+    .card-back { transform: rotateY(180deg); }
+
+    .card-corner {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      font-family: var(--serif);
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      opacity: 0.85;
+    }
+    .card-front-grid {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 1rem;
+      align-items: center;
+      height: 100%;
+    }
+    .avatar {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background:
+        linear-gradient(135deg, #2a2a3e, #1a1a2e);
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif);
+      font-size: 2rem;
+      color: var(--gold);
+      overflow: hidden;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .name {
+      font-family: var(--serif);
+      font-size: clamp(1.7rem, 5vw, 2.1rem);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .title {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 6px;
+    }
+    .company {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+    .tags {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 12px;
+    }
+    .tag {
+      font-size: 0.66rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: var(--gold);
+    }
+    .tag.silver {
+      background: rgba(192, 192, 192, 0.08);
+      border-color: rgba(192, 192, 192, 0.25);
+      color: var(--silver);
+    }
+    .card-footer-mark {
+      position: absolute;
+      bottom: 14px;
+      left: 16px;
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    /* card back */
+    .card-back .back-grid {
+      display: grid;
+      grid-template-columns: 1fr 96px;
+      gap: 1rem;
+      height: 100%;
+    }
+    .back-info {
+      display: flex; flex-direction: column;
+      gap: 6px;
+      font-size: 0.74rem;
+      color: var(--text-dim);
+      overflow: hidden;
+    }
+    .back-info .row { display: flex; gap: 8px; align-items: flex-start; }
+    .back-info .row svg {
+      width: 13px; height: 13px;
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .back-info .row span { line-height: 1.35; word-break: break-word; }
+    .back-info .row strong { color: var(--text); font-weight: 500; }
+    .qr-wrap {
+      width: 96px; height: 96px;
+      align-self: end;
+      padding: 6px;
+      background: #0d0d0d;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .qr-wrap canvas, .qr-wrap img { width: 100% !important; height: 100% !important; }
+    .back-title {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .flip-hint {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+      opacity: 0.7;
+    }
+
+    /* ============ ACTION BUTTONS ============ */
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.7rem;
+      margin: 0.5rem auto 3rem;
+      max-width: 640px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.2rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: var(--text);
+    }
+    .btn svg { width: 16px; height: 16px; }
+    .btn:hover {
+      border-color: rgba(212, 175, 55, 0.5);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+      transform: translateY(-2px);
+    }
+    .btn:active { transform: translateY(0) scale(0.97); }
+    .btn.primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-soft));
+      color: #0d0d0d;
+      border-color: transparent;
+      font-weight: 600;
+    }
+    .btn.primary:hover {
+      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+    }
+    .btn.whatsapp {
+      background: rgba(37, 211, 102, 0.12);
+      border-color: rgba(37, 211, 102, 0.4);
+      color: #25d366;
+    }
+    .btn.whatsapp:hover {
+      background: rgba(37, 211, 102, 0.2);
+      box-shadow: 0 0 20px rgba(37, 211, 102, 0.25);
+    }
+
+    /* ============ SECTION HEADER ============ */
+    .section-head {
+      text-align: center;
+      margin: 4rem 0 2rem;
+    }
+    .section-head h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
+    .section-head h2 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .section-head p {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      margin-top: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ============ COMMITMENTS ============ */
+    .commitments {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .commitment {
+      position: relative;
+      padding: 1.6rem 1.4rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      text-align: center;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .commitment:hover {
+      transform: translateY(-4px);
+      border-color: rgba(212, 175, 55, 0.4);
+      box-shadow: var(--shadow-glow);
+    }
+    .commitment-icon {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: var(--gold);
+      margin-bottom: 0.9rem;
+      transition: all 0.3s ease;
+    }
+    .commitment:hover .commitment-icon {
+      background: rgba(212, 175, 55, 0.18);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+      transform: scale(1.05);
+    }
+    .commitment-icon svg { width: 24px; height: 24px; }
+    .commitment h3 {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .commitment p { font-size: 0.85rem; color: var(--text-dim); }
+    .commitment .tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: #0d0d0d;
+      color: var(--text);
+      font-size: 0.75rem;
+      padding: 8px 12px;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 5;
+    }
+    .commitment:hover .tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ============ CAR SHOWCASE ============ */
+    .cars-rail {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding: 0.5rem 0.2rem 1.5rem;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold) transparent;
+    }
+    .cars-rail::-webkit-scrollbar { height: 6px; }
+    .cars-rail::-webkit-scrollbar-thumb { background: var(--gold-soft); border-radius: 3px; }
+    .cars-rail::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+
+    .car-card {
+      flex: 0 0 280px;
+      scroll-snap-align: start;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      cursor: pointer;
+    }
+    .car-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.3);
+    }
+    .car-image {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      background: #0a0a14;
+    }
+    .car-image img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.45s ease;
+    }
+    .car-card:hover .car-image img { transform: scale(1.05); }
+    .car-badge {
+      position: absolute;
+      top: 10px; left: 10px;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 4px 9px;
+      border-radius: 4px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .car-badge.recond {
+      background: rgba(212, 175, 55, 0.85);
+      color: #0d0d0d;
+      font-weight: 600;
+    }
+    .car-badge.used {
+      background: rgba(192, 192, 192, 0.85);
+      color: #0d0d0d;
+      font-weight: 600;
+    }
+    .car-body {
+      padding: 1rem 1.1rem 1.2rem;
+    }
+    .car-name {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .car-year {
+      font-size: 0.75rem;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      margin: 2px 0 8px;
+    }
+    .car-tag {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    /* ============ BRANCHES ============ */
+    .branches {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .branch-card {
+      padding: 1.6rem 1.5rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .branch-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(212, 175, 55, 0.35);
+    }
+    .branch-name {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .branch-name svg { width: 20px; height: 20px; }
+    .branch-row {
+      display: flex; gap: 0.7rem; align-items: flex-start;
+      margin-bottom: 0.7rem;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+    .branch-row svg {
+      width: 15px; height: 15px;
+      flex-shrink: 0;
+      margin-top: 3px;
+      color: var(--silver);
+    }
+    .branch-row strong { color: var(--text); font-weight: 500; }
+    .branch-actions { margin-top: 1rem; }
+    .branch-actions .btn { padding: 0.55rem 1rem; font-size: 0.8rem; }
+
+    .company-foot {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.2rem;
+      padding: 1.2rem;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+    .company-foot a {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      transition: color 0.25s ease;
+    }
+    .company-foot a:hover { color: var(--gold); }
+    .company-foot svg { width: 16px; height: 16px; }
+
+    /* ============ SHARE ============ */
+    .share-section {
+      text-align: center;
+      padding: 2rem 0 4rem;
+    }
+    .share-actions {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 0.7rem;
+      margin-top: 1.2rem;
+    }
+
+    /* ============ MODAL ============ */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 1rem;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .modal-backdrop.open { display: flex; opacity: 1; }
+    .modal {
+      width: min(520px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: linear-gradient(180deg, #161622 0%, #0d0d15 100%);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 18px;
+      box-shadow: var(--shadow-lg);
+      transform: scale(0.95);
+      transition: transform 0.3s cubic-bezier(0.2,0.9,0.3,1.4);
+    }
+    .modal-backdrop.open .modal { transform: scale(1); }
+    .modal-image { aspect-ratio: 16/10; background: #0a0a14; overflow: hidden; }
+    .modal-image img { width: 100%; height: 100%; object-fit: cover; }
+    .modal-body { padding: 1.4rem 1.6rem 1.6rem; }
+    .modal-name {
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .modal-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.6rem;
+      margin: 1rem 0;
+    }
+    .modal-meta div {
+      padding: 0.7rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+    }
+    .modal-meta dt {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 4px;
+    }
+    .modal-meta dd { color: var(--gold); font-weight: 500; font-size: 0.95rem; }
+    .modal-desc { font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; margin-bottom: 1.2rem; }
+    .modal-close {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--glass-border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text);
+      transition: all 0.25s ease;
+    }
+    .modal-close:hover { background: var(--gold); color: #0d0d0d; transform: rotate(90deg); }
+    .modal-close svg { width: 16px; height: 16px; }
+    .modal-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+    /* ============ FOOTER ============ */
+    footer {
+      text-align: center;
+      padding: 1rem 1rem 2rem;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+    footer .gold { color: var(--gold); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 1.4rem;
+      left: 50%;
+      transform: translate(-50%, 100px);
+      background: #0d0d0d;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 0.8rem 1.4rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      z-index: 300;
+      transition: transform 0.35s cubic-bezier(0.2,0.9,0.3,1.4);
+      box-shadow: var(--shadow-glow);
+    }
+    .toast.show { transform: translate(-50%, 0); }
+
+    /* Mobile tweaks */
+    @media (max-width: 540px) {
+      .lang-toggle { top: 0.6rem; right: 0.6rem; }
+      .lang-btn { padding: 5px 10px; font-size: 0.72rem; }
+      .actions { gap: 0.5rem; }
+      .btn { padding: 0.7rem 1rem; font-size: 0.8rem; }
+      .card-front-grid { grid-template-columns: 64px 1fr; gap: 0.8rem; }
+      .avatar { width: 64px; height: 64px; font-size: 1.6rem; }
+      .name { font-size: 1.5rem; }
+      .car-card { flex-basis: 240px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <!-- Language toggle -->
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button class="lang-btn active" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="zh">中文</button>
+    <button class="lang-btn" data-lang="bm">BM</button>
+  </div>
+
+  <main class="container page-fade">
+    <div class="hero">
+      <div class="hero-eyebrow" data-i18n="eyebrow">RECOND &amp; USED CAR SPECIALIST</div>
+    </div>
+
+    <!-- ===== A. CARD SECTION ===== -->
+    <section class="card-section">
+      <div class="card-perspective" id="cardPerspective" tabindex="0" aria-label="Business card. Hover or tap to flip.">
+        <div class="card-3d">
+          <!-- FRONT -->
+          <article class="card-face card-front">
+            <div class="card-corner">EM</div>
+            <div class="card-front-grid">
+              <div class="avatar" id="AVATAR_PLACEHOLDER">
+                <!-- AVATAR_PLACEHOLDER: replace span with <img src="..." alt="Kingston" /> -->
+                <img src="https://placehold.co/200x200/1a1a1a/d4af37?text=K" alt="Kingston" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />
+              </div>
+              <div>
+                <div class="name">Kingston</div>
+                <div class="title" data-i18n="title">RECOND &amp; USED CAR SPECIALIST</div>
+                <div class="company">Eric Motors Sdn. Bhd.</div>
+                <div class="tags">
+                  <span class="tag" data-i18n="tagRecond">Recond Cars</span>
+                  <span class="tag silver" data-i18n="tagUsed">Used Cars</span>
+                  <span class="tag" data-i18n="tagDelivery">Sarawak</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer-mark">ERIC MOTORS · MIRI</div>
+          </article>
+
+          <!-- BACK -->
+          <article class="card-face card-back">
+            <div class="back-grid">
+              <div>
+                <div class="back-title" data-i18n="contact">Contact</div>
+                <div class="back-info">
+                  <div class="row">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <span><strong>+60 11-1601 7673</strong></span>
+                  </div>
+                  <div class="row">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                    <span>WhatsApp Available</span>
+                  </div>
+                  <div class="row">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <span>kingstonchoo7673@gmail.com</span>
+                  </div>
+                  <div class="row">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span><strong>Boulevard:</strong> Lot 2911, Jalan Vinca, Boulevard Commercial Centre, 98000 Miri</span>
+                  </div>
+                  <div class="row">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span><strong>Krokop:</strong> Lot 782, Jalan Krokop 5, 98000 Miri</span>
+                  </div>
+                </div>
+              </div>
+              <div class="qr-wrap" id="qrcode" aria-label="vCard QR code"></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <p class="flip-hint" data-i18n="flipHint">Hover · Tap to flip</p>
+
+    <!-- ===== ACTION BUTTONS ===== -->
+    <div class="actions">
+      <a class="btn primary" href="tel:+60111601 7673">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span data-i18n="btnCall">Call</span>
+      </a>
+      <a class="btn whatsapp" href="https://wa.me/601116017673?text=Hi%20Kingston%2C%20I%27m%20interested%20in%20your%20cars%20at%20Eric%20Motors" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <span data-i18n="btnWhatsApp">WhatsApp</span>
+      </a>
+      <a class="btn" href="mailto:kingstonchoo7673@gmail.com?subject=Enquiry%20-%20Eric%20Motors">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span data-i18n="btnEmail">Email</span>
+      </a>
+      <button class="btn" id="saveContactBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span data-i18n="btnSave">Save Contact</span>
+      </button>
+    </div>
+
+    <!-- ===== B. COMMITMENTS ===== -->
+    <div class="section-head">
+      <h2 data-i18n="commitTitle">My Personal <em>Commitments</em></h2>
+      <p data-i18n="commitSub">A promise — not a tagline.</p>
+    </div>
+    <section class="commitments">
+      <div class="commitment">
+        <div class="commitment-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 data-i18n="c1Title">Honest Disclosure</h3>
+        <p data-i18n="c1Body">Full vehicle history, no hidden surprises</p>
+        <span class="tooltip" data-i18n="c1Tip">Mileage, accident records, ownership — fully shared upfront.</span>
+      </div>
+      <div class="commitment">
+        <div class="commitment-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <h3 data-i18n="c2Title">Free Inspection</h3>
+        <p data-i18n="c2Body">Complimentary pre-purchase inspection for every buyer</p>
+        <span class="tooltip" data-i18n="c2Tip">Bring a trusted mechanic — or use ours, free of charge.</span>
+      </div>
+      <div class="commitment">
+        <div class="commitment-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h3 data-i18n="c3Title">Verified Only</h3>
+        <p data-i18n="c3Body">Every car verified before listing</p>
+        <span class="tooltip" data-i18n="c3Tip">Documents, condition and provenance checked — always.</span>
+      </div>
+    </section>
+
+    <!-- ===== C. CAR SHOWCASE ===== -->
+    <div class="section-head">
+      <h2 data-i18n="carsTitle">Featured <em>Inventory</em></h2>
+      <p data-i18n="carsSub">A curated selection — recond imports & quality used cars.</p>
+    </div>
+    <div class="cars-rail" id="carsRail" role="list"></div>
+
+    <!-- ===== D. BRANCHES ===== -->
+    <div class="section-head">
+      <h2 data-i18n="branchesTitle">Visit Our <em>Branches</em></h2>
+      <p data-i18n="branchesSub">Both showrooms in Miri, Sarawak.</p>
+    </div>
+    <section class="branches">
+      <div class="branch-card">
+        <div class="branch-name">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4 8 4v14M9 9v.01M9 13v.01M9 17v.01M15 9v.01M15 13v.01M15 17v.01"/></svg>
+          <span data-i18n="branch1Name">Boulevard Branch</span>
+        </div>
+        <div class="branch-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Lot 2911, Jalan Vinca,<br/>Boulevard Commercial Centre, 98000 Miri</span>
+        </div>
+        <div class="branch-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>
+            <strong data-i18n="hoursWeekday">Mon–Fri</strong> 8:30 AM – 5:15 PM<br/>
+            <strong data-i18n="hoursSat">Sat</strong> 8:30 AM – 4:00 PM<br/>
+            <strong data-i18n="hoursSun">Sun</strong> <span data-i18n="closed">Closed</span>
+          </span>
+        </div>
+        <div class="branch-actions">
+          <a class="btn primary" href="https://www.google.com/maps/search/?api=1&query=Eric+Motors+Boulevard+Miri" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            <span data-i18n="getDirections">Get Directions</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="branch-card">
+        <div class="branch-name">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4 8 4v14M9 9v.01M9 13v.01M9 17v.01M15 9v.01M15 13v.01M15 17v.01"/></svg>
+          <span data-i18n="branch2Name">Krokop Branch</span>
+        </div>
+        <div class="branch-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Lot 782, Jalan Krokop 5,<br/>98000 Miri</span>
+        </div>
+        <div class="branch-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>
+            <strong data-i18n="hoursWeekday">Mon–Fri</strong> 8:30 AM – 5:15 PM<br/>
+            <strong data-i18n="hoursSat">Sat</strong> 8:30 AM – 4:00 PM<br/>
+            <strong data-i18n="hoursSun">Sun</strong> <span data-i18n="closed">Closed</span>
+          </span>
+        </div>
+        <div class="branch-actions">
+          <a class="btn primary" href="https://www.google.com/maps/search/?api=1&query=Eric+Motors+Krokop+Miri" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            <span data-i18n="getDirections">Get Directions</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="company-foot">
+        <a href="tel:+6085419968">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +60 85-419 968
+        </a>
+        <a href="https://facebook.com/ericmotorssdnbhd" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          facebook.com/ericmotorssdnbhd
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== E. SHARE ===== -->
+    <div class="section-head share-section">
+      <h2 data-i18n="shareTitle">Share This <em>Card</em></h2>
+      <p data-i18n="shareSub">Pass it along — it travels well.</p>
+      <div class="share-actions">
+        <button class="btn" id="copyLinkBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span data-i18n="btnCopy">Copy Link</span>
+        </button>
+        <button class="btn" id="downloadImgBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span data-i18n="btnImage">Download Image</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Eric Motors Sdn. Bhd. · <span class="gold">Miri, Sarawak</span>
+  </footer>
+
+  <!-- ===== MODAL ===== -->
+  <div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" role="document">
+      <button class="modal-close" id="modalClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="modal-image"><img id="modalImg" alt="" /></div>
+      <div class="modal-body">
+        <div class="modal-name" id="modalName"></div>
+        <div class="car-year" id="modalYear"></div>
+        <dl class="modal-meta">
+          <div><dt data-i18n="metaYear">Year</dt><dd id="metaYear">20XX</dd></div>
+          <div><dt data-i18n="metaMileage">Mileage</dt><dd id="metaMileage">XX,XXX km</dd></div>
+          <div><dt data-i18n="metaPrice">Price</dt><dd id="metaPrice">RM XX,XXX</dd></div>
+        </dl>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-actions">
+          <a class="btn whatsapp" id="modalWa" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <span data-i18n="modalEnquire">Enquire on WhatsApp</span>
+          </a>
+          <a class="btn primary" href="tel:+60111601 7673">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span data-i18n="btnCall">Call</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- External libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ============ I18N ============
+    const i18n = {
+      en: {
+        eyebrow: 'RECOND & USED CAR SPECIALIST',
+        title: 'RECOND & USED CAR SPECIALIST',
+        tagRecond: 'Recond Cars',
+        tagUsed: 'Used Cars',
+        tagDelivery: 'Sarawak',
+        contact: 'Contact',
+        flipHint: 'Hover · Tap to flip',
+        btnCall: 'Call',
+        btnWhatsApp: 'WhatsApp',
+        btnEmail: 'Email',
+        btnSave: 'Save Contact',
+        commitTitle: 'My Personal <em>Commitments</em>',
+        commitSub: 'A promise — not a tagline.',
+        c1Title: 'Honest Disclosure',
+        c1Body: 'Full vehicle history, no hidden surprises',
+        c1Tip: 'Mileage, accident records, ownership — fully shared upfront.',
+        c2Title: 'Free Inspection',
+        c2Body: 'Complimentary pre-purchase inspection for every buyer',
+        c2Tip: 'Bring a trusted mechanic — or use ours, free of charge.',
+        c3Title: 'Verified Only',
+        c3Body: 'Every car verified before listing',
+        c3Tip: 'Documents, condition and provenance checked — always.',
+        carsTitle: 'Featured <em>Inventory</em>',
+        carsSub: 'A curated selection — recond imports & quality used cars.',
+        branchesTitle: 'Visit Our <em>Branches</em>',
+        branchesSub: 'Both showrooms in Miri, Sarawak.',
+        branch1Name: 'Boulevard Branch',
+        branch2Name: 'Krokop Branch',
+        hoursWeekday: 'Mon–Fri',
+        hoursSat: 'Sat',
+        hoursSun: 'Sun',
+        closed: 'Closed',
+        getDirections: 'Get Directions',
+        shareTitle: 'Share This <em>Card</em>',
+        shareSub: 'Pass it along — it travels well.',
+        btnCopy: 'Copy Link',
+        btnImage: 'Download Image',
+        copied: 'Copied ✓',
+        saved: 'vCard downloaded ✓',
+        captured: 'Image saved ✓',
+        metaYear: 'Year',
+        metaMileage: 'Mileage',
+        metaPrice: 'Price',
+        modalEnquire: 'Enquire on WhatsApp',
+        car1Tag: 'JDM luxury MPV, low mileage, full spec',
+        car2Tag: 'Executive MPV, panoramic roof, 7-seater',
+        car3Tag: 'Reliable family SUV, full service record',
+        car4Tag: 'Premium sedan, low mileage, well kept',
+        car5Tag: 'Sleek Japanese SUV, full leather interior',
+        car6Tag: 'Sport sedan, dynamic drive, excellent condition',
+        recond: 'Recond',
+        used: 'Used'
+      },
+      zh: {
+        eyebrow: '复新车与二手车专员',
+        title: '复新车与二手车专员',
+        tagRecond: '复新车',
+        tagUsed: '二手车',
+        tagDelivery: '砂拉越',
+        contact: '联络方式',
+        flipHint: '悬停 · 点击翻面',
+        btnCall: '拨打电话',
+        btnWhatsApp: 'WhatsApp',
+        btnEmail: '电邮',
+        btnSave: '保存联系',
+        commitTitle: '我的个人 <em>承诺</em>',
+        commitSub: '是承诺,不是口号。',
+        c1Title: '诚实披露',
+        c1Body: '完整车况历史,绝无隐瞒',
+        c1Tip: '里程、事故记录、车主资讯——全部预先告知。',
+        c2Title: '免费验车',
+        c2Body: '每位买家皆享购前免费检验',
+        c2Tip: '可自带信任的技师——或使用我们的免费服务。',
+        c3Title: '严格验车',
+        c3Body: '上架前每辆车都经过验证',
+        c3Tip: '文件、车况、来源——全部核实。',
+        carsTitle: '精选 <em>车款</em>',
+        carsSub: '精挑细选——复新进口与优质二手。',
+        branchesTitle: '光临我们的 <em>分行</em>',
+        branchesSub: '两间陈列室,皆位于砂拉越美里。',
+        branch1Name: '大道分行',
+        branch2Name: 'Krokop 分行',
+        hoursWeekday: '周一至五',
+        hoursSat: '周六',
+        hoursSun: '周日',
+        closed: '休息',
+        getDirections: '导航前往',
+        shareTitle: '分享这张 <em>名片</em>',
+        shareSub: '一张好名片,值得传递。',
+        btnCopy: '复制链接',
+        btnImage: '下载图片',
+        copied: '已复制 ✓',
+        saved: '名片已下载 ✓',
+        captured: '图片已保存 ✓',
+        metaYear: '年份',
+        metaMileage: '里程',
+        metaPrice: '售价',
+        modalEnquire: 'WhatsApp 询问',
+        car1Tag: '日系豪华 MPV · 低里程 · 顶配',
+        car2Tag: '行政级 MPV · 全景天窗 · 七人座',
+        car3Tag: '可靠家用 SUV · 完整保养记录',
+        car4Tag: '高端房车 · 低里程 · 保养良好',
+        car5Tag: '日系流线 SUV · 全真皮内装',
+        car6Tag: '运动房车 · 操控强劲 · 状况一流',
+        recond: '复新',
+        used: '二手'
+      },
+      bm: {
+        eyebrow: 'PAKAR KERETA RECOND & TERPAKAI',
+        title: 'PAKAR KERETA RECOND & TERPAKAI',
+        tagRecond: 'Kereta Recond',
+        tagUsed: 'Kereta Terpakai',
+        tagDelivery: 'Sarawak',
+        contact: 'Hubungi',
+        flipHint: 'Hover · Ketuk untuk terbalikkan',
+        btnCall: 'Panggil',
+        btnWhatsApp: 'WhatsApp',
+        btnEmail: 'E-mel',
+        btnSave: 'Simpan Kenalan',
+        commitTitle: 'Komitmen <em>Peribadi</em> Saya',
+        commitSub: 'Janji — bukan slogan.',
+        c1Title: 'Pendedahan Jujur',
+        c1Body: 'Sejarah kenderaan penuh, tiada rahsia tersembunyi',
+        c1Tip: 'Bacaan meter, rekod kemalangan, pemilikan — semua didedahkan awal.',
+        c2Title: 'Pemeriksaan Percuma',
+        c2Body: 'Pemeriksaan pra-belian percuma untuk setiap pembeli',
+        c2Tip: 'Bawa mekanik anda — atau guna kami, percuma.',
+        c3Title: 'Disahkan Sahaja',
+        c3Body: 'Setiap kereta disahkan sebelum disenaraikan',
+        c3Tip: 'Dokumen, keadaan dan asal-usul — sentiasa disemak.',
+        carsTitle: 'Inventori <em>Pilihan</em>',
+        carsSub: 'Pilihan terkurat — import recond & kereta terpakai berkualiti.',
+        branchesTitle: 'Lawati <em>Cawangan</em> Kami',
+        branchesSub: 'Kedua-dua bilik pameran di Miri, Sarawak.',
+        branch1Name: 'Cawangan Boulevard',
+        branch2Name: 'Cawangan Krokop',
+        hoursWeekday: 'Isn–Jum',
+        hoursSat: 'Sab',
+        hoursSun: 'Ahd',
+        closed: 'Tutup',
+        getDirections: 'Dapatkan Arah',
+        shareTitle: 'Kongsi Kad <em>Ini</em>',
+        shareSub: 'Hantarkan — ia mudah dikongsi.',
+        btnCopy: 'Salin Pautan',
+        btnImage: 'Muat Turun Imej',
+        copied: 'Disalin ✓',
+        saved: 'vCard dimuat turun ✓',
+        captured: 'Imej disimpan ✓',
+        metaYear: 'Tahun',
+        metaMileage: 'Bacaan Meter',
+        metaPrice: 'Harga',
+        modalEnquire: 'Tanya di WhatsApp',
+        car1Tag: 'MPV mewah JDM, batu rendah, spesifikasi penuh',
+        car2Tag: 'MPV eksekutif, bumbung panoramik, 7 tempat duduk',
+        car3Tag: 'SUV keluarga yang boleh diharap, rekod servis penuh',
+        car4Tag: 'Sedan premium, batu rendah, dijaga rapi',
+        car5Tag: 'SUV Jepun yang anggun, interior kulit penuh',
+        car6Tag: 'Sedan sukan, pemanduan dinamik, keadaan cemerlang',
+        recond: 'Recond',
+        used: 'Terpakai'
+      }
+    };
+
+    let currentLang = 'en';
+
+    function applyI18n(lang) {
+      currentLang = lang;
+      const dict = i18n[lang];
+      document.documentElement.lang = lang === 'zh' ? 'zh' : (lang === 'bm' ? 'ms' : 'en');
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key] !== undefined) el.innerHTML = dict[key];
+      });
+      // refresh dynamic parts
+      renderCars();
+    }
+
+    document.querySelectorAll('.lang-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (btn.classList.contains('active')) return;
+        document.querySelectorAll('.lang-btn').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        const main = document.querySelector('.page-fade');
+        main.classList.add('fading');
+        setTimeout(() => {
+          applyI18n(btn.dataset.lang);
+          main.classList.remove('fading');
+        }, 250);
+      });
+    });
+
+    // ============ CARS DATA ============
+    const cars = [
+      { id: 1, name: 'Toyota Vellfire',       year: '2020', type: 'recond', img: 'https://placehold.co/400x250/0d0d0d/d4af37?text=Vellfire',  tagKey: 'car1Tag' },
+      { id: 2, name: 'Toyota Alphard',        year: '2021', type: 'recond', img: 'https://placehold.co/400x250/0d0d0d/d4af37?text=Alphard',   tagKey: 'car2Tag' },
+      { id: 3, name: 'Honda CR-V',            year: '2019', type: 'used',   img: 'https://placehold.co/400x250/0d0d0d/d4af37?text=CR-V',      tagKey: 'car3Tag' },
+      { id: 4, name: 'Mercedes-Benz C-Class', year: '2018', type: 'used',   img: 'https://placehold.co/400x250/0d0d0d/d4af37?text=C-Class',   tagKey: 'car4Tag' },
+      { id: 5, name: 'Toyota Harrier',        year: '2021', type: 'recond', img: 'https://placehold.co/400x250/0d0d0d/d4af37?text=Harrier',   tagKey: 'car5Tag' },
+      { id: 6, name: 'BMW 3 Series',          year: '2019', type: 'used',   img: 'https://placehold.co/400x250/0d0d0d/d4af37?text=BMW+3',     tagKey: 'car6Tag' }
+    ];
+
+    function renderCars() {
+      const rail = document.getElementById('carsRail');
+      const dict = i18n[currentLang];
+      rail.innerHTML = cars.map((c) => `
+        <article class="car-card" role="listitem" data-id="${c.id}">
+          <div class="car-image">
+            <span class="car-badge ${c.type}">${c.type === 'recond' ? dict.recond : dict.used}</span>
+            <img src="${c.img}" alt="${c.name}" loading="lazy" />
+          </div>
+          <div class="car-body">
+            <div class="car-name">${c.name}</div>
+            <div class="car-year">${c.year}</div>
+            <div class="car-tag">${dict[c.tagKey]}</div>
+          </div>
+        </article>
+      `).join('');
+      rail.querySelectorAll('.car-card').forEach((el) => {
+        el.addEventListener('click', () => openModal(parseInt(el.dataset.id, 10)));
+      });
+    }
+
+    // ============ MODAL ============
+    const modal = document.getElementById('modal');
+    function openModal(id) {
+      const car = cars.find((c) => c.id === id);
+      if (!car) return;
+      const dict = i18n[currentLang];
+      document.getElementById('modalImg').src = car.img;
+      document.getElementById('modalImg').alt = car.name;
+      document.getElementById('modalName').textContent = car.name;
+      document.getElementById('modalYear').textContent = car.year + ' · ' + (car.type === 'recond' ? dict.recond : dict.used);
+      document.getElementById('metaYear').textContent = car.year;
+      document.getElementById('metaMileage').textContent = 'XX,XXX km';
+      document.getElementById('metaPrice').textContent = 'RM XX,XXX';
+      document.getElementById('modalDesc').textContent = dict[car.tagKey] + ' — ' + (
+        currentLang === 'zh' ? '欢迎询问详细规格、报价及实地试驾。' :
+        currentLang === 'bm' ? 'Hubungi kami untuk spesifikasi penuh, sebut harga & pandu uji.' :
+        'Reach out for full specs, quote and a test drive.'
+      );
+      const waText = encodeURIComponent('Hi Kingston, I\'m interested in the ' + car.year + ' ' + car.name + ' at Eric Motors.');
+      document.getElementById('modalWa').href = 'https://wa.me/601116017673?text=' + waText;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    // ============ CARD: 3D FLIP (mobile tap) + PARALLAX ============
+    const cardPersp = document.getElementById('cardPerspective');
+    const isTouch = window.matchMedia('(hover: none)').matches;
+
+    if (isTouch) {
+      cardPersp.addEventListener('click', () => cardPersp.classList.toggle('flipped'));
+    }
+    cardPersp.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        cardPersp.classList.toggle('flipped');
+      }
+    });
+
+    // Parallax tilt (desktop)
+    if (!isTouch) {
+      cardPersp.addEventListener('mousemove', (e) => {
+        const rect = cardPersp.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        // tilt range ±6deg, applied alongside the inner flip
+        cardPersp.style.transform = `rotateX(${(-y * 6).toFixed(2)}deg) rotateY(${(x * 6).toFixed(2)}deg)`;
+      });
+      cardPersp.addEventListener('mouseleave', () => {
+        cardPersp.style.transform = '';
+      });
+    }
+
+    // ============ QR CODE ============
+    const vCardData = [
+      'BEGIN:VCARD',
+      'VERSION:3.0',
+      'FN:Kingston',
+      'N:;Kingston;;;',
+      'ORG:Eric Motors Sdn. Bhd.',
+      'TITLE:Recond & Used Car Specialist',
+      'TEL;TYPE=CELL,VOICE:+60111601 7673',
+      'TEL;TYPE=WORK,VOICE:+6085419968',
+      'EMAIL;TYPE=INTERNET:kingstonchoo7673@gmail.com',
+      'URL:https://wa.me/601116017673',
+      'ADR;TYPE=WORK:;;Lot 2911 Jalan Vinca, Boulevard Commercial Centre;Miri;Sarawak;98000;Malaysia',
+      'NOTE:Recond & Used Cars - Honest disclosure, free inspection, verified only.',
+      'END:VCARD'
+    ].join('\n');
+
+    function buildQR() {
+      const el = document.getElementById('qrcode');
+      el.innerHTML = '';
+      if (typeof QRCode === 'undefined') return;
+      new QRCode(el, {
+        text: vCardData,
+        width: 84,
+        height: 84,
+        colorDark: '#d4af37',
+        colorLight: '#0d0d0d',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+    if (typeof QRCode !== 'undefined') {
+      buildQR();
+    } else {
+      window.addEventListener('load', buildQR);
+    }
+
+    // ============ SAVE CONTACT (vCard download) ============
+    document.getElementById('saveContactBtn').addEventListener('click', () => {
+      const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Kingston-EricMotors.vcf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 500);
+      showToast(i18n[currentLang].saved);
+    });
+
+    // ============ COPY LINK ============
+    const copyBtn = document.getElementById('copyLinkBtn');
+    copyBtn.addEventListener('click', async () => {
+      const url = window.location.href;
+      const label = copyBtn.querySelector('[data-i18n]');
+      const original = i18n[currentLang].btnCopy;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(url);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = url;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+        label.textContent = i18n[currentLang].copied;
+        showToast(i18n[currentLang].copied);
+        setTimeout(() => { label.textContent = i18n[currentLang].btnCopy; }, 2000);
+      } catch (err) {
+        showToast('Copy failed');
+      }
+    });
+
+    // ============ DOWNLOAD IMAGE ============
+    document.getElementById('downloadImgBtn').addEventListener('click', () => {
+      if (typeof html2canvas === 'undefined') {
+        showToast('html2canvas not loaded');
+        return;
+      }
+      const target = document.querySelector('.card-section');
+      html2canvas(target, {
+        backgroundColor: '#0d0d0d',
+        scale: 2,
+        useCORS: true,
+        logging: false
+      }).then((canvas) => {
+        const link = document.createElement('a');
+        link.download = 'Kingston-EricMotors-Card.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showToast(i18n[currentLang].captured);
+      }).catch((err) => {
+        showToast('Capture failed');
+        console.error(err);
+      });
+    });
+
+    // ============ TOAST ============
+    let toastTimer;
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    // ============ PARTICLE BACKGROUND ============
+    (function particles() {
+      const canvas = document.getElementById('particles');
+      const ctx = canvas.getContext('2d');
+      let w, h, dpr;
+      const PARTICLE_COUNT = window.innerWidth < 600 ? 38 : 70;
+      const particles = [];
+      const palette = ['#d4af37', '#b8962e', '#c0c0c0', '#e8d36a'];
+
+      // simple seeded RNG (mulberry32) so the layout is stable per session
+      const seed = (Date.now() & 0xffffffff) >>> 0;
+      let state = seed;
+      function rand() {
+        state |= 0; state = (state + 0x6D2B79F5) | 0;
+        let t = Math.imul(state ^ (state >>> 15), 1 | state);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      }
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function spawn() {
+        particles.length = 0;
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          particles.push({
+            x: rand() * w,
+            y: rand() * h,
+            vx: (rand() - 0.5) * 0.18,
+            vy: (rand() - 0.5) * 0.18 - 0.05,
+            r: rand() * 1.6 + 0.4,
+            color: palette[Math.floor(rand() * palette.length)],
+            phase: rand() * Math.PI * 2,
+            speed: 0.005 + rand() * 0.012
+          });
+        }
+      }
+
+      function draw(t) {
+        ctx.clearRect(0, 0, w, h);
+        for (const p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.phase += p.speed;
+          if (p.x < -10) p.x = w + 10;
+          if (p.x > w + 10) p.x = -10;
+          if (p.y < -10) p.y = h + 10;
+          if (p.y > h + 10) p.y = -10;
+
+          const alpha = 0.35 + Math.sin(p.phase) * 0.3;
+          ctx.beginPath();
+          const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
+          grad.addColorStop(0, p.color);
+          grad.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = grad;
+          ctx.globalAlpha = Math.max(0.05, Math.min(0.65, alpha));
+          ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.globalAlpha = 0.9;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(draw);
+      }
+
+      resize();
+      spawn();
+      requestAnimationFrame(draw);
+      window.addEventListener('resize', () => { resize(); spawn(); });
+    })();
+
+    // ============ INIT ============
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderCars();
+  })();
+  </script>
+</body>
+</html>
