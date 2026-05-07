@@ -102,6 +102,8 @@
       color: var(--text-dim);
       border-radius: 999px;
       transition: all 0.3s ease;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
     .lang-btn:hover { color: var(--text); }
     .lang-btn.active {
@@ -145,13 +147,18 @@
       perspective: 1500px;
       padding: 1rem 0 2rem;
     }
-    .card-perspective {
+        .card-perspective {
       width: min(420px, 92vw);
       height: 260px;
       position: relative;
+      -webkit-transform-style: preserve-3d;
       transform-style: preserve-3d;
+      -webkit-transition: -webkit-transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.4);
       transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.4);
       will-change: transform;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
     }
     @media (min-width: 700px) {
       .card-perspective { width: 460px; height: 280px; }
@@ -160,22 +167,26 @@
       position: relative;
       width: 100%;
       height: 100%;
+      -webkit-transform-style: preserve-3d;
       transform-style: preserve-3d;
+      -webkit-transition: -webkit-transform 0.9s cubic-bezier(0.6, 0.05, 0.3, 1);
       transition: transform 0.9s cubic-bezier(0.6, 0.05, 0.3, 1);
     }
     @media (hover: hover) {
       .card-perspective:hover .card-3d {
+        -webkit-transform: rotateY(180deg);
         transform: rotateY(180deg);
       }
     }
     .card-perspective.flipped .card-3d {
+      -webkit-transform: rotateY(180deg);
       transform: rotateY(180deg);
     }
     .card-face {
       position: absolute;
       inset: 0;
-      backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
       border-radius: 18px;
       padding: 1.5rem 1.6rem;
       background:
@@ -195,7 +206,7 @@
       pointer-events: none;
     }
     .card-front { z-index: 2; }
-    .card-back { transform: rotateY(180deg); }
+    .card-back { -webkit-transform: rotateY(180deg); transform: rotateY(180deg); }
 
     .card-corner {
       position: absolute;
@@ -422,6 +433,8 @@
       -webkit-backdrop-filter: blur(12px);
       text-align: center;
       transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
     .commitment:hover, .commitment.active {
       transform: translateY(-4px);
@@ -1239,7 +1252,7 @@
         setTimeout(() => {
           applyI18n(btn.dataset.lang);
           main.classList.remove('fading');
-        }, 250);
+        }, 350);
       });
     });
 
@@ -1307,11 +1320,12 @@
 
     // ============ CARD: 3D FLIP (mobile tap) + PARALLAX ============
     const cardPersp = document.getElementById('cardPerspective');
-    const isTouch = window.matchMedia('(hover: none)').matches;
+    // Use ontouchstart detection — more reliable than matchMedia('hover: none') on iOS/Android
+    const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 
-    if (isTouch) {
-      cardPersp.addEventListener('click', () => cardPersp.classList.toggle('flipped'));
-    }
+    // Always bind click for flip (works for both touch tap and keyboard users)
+    cardPersp.addEventListener('click', () => cardPersp.classList.toggle('flipped'));
+
     cardPersp.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -1319,7 +1333,7 @@
       }
     });
 
-    // Parallax tilt (desktop)
+    // Parallax tilt (desktop only — skip on touch devices)
     if (!isTouch) {
       cardPersp.addEventListener('mousemove', (e) => {
         const rect = cardPersp.getBoundingClientRect();
@@ -1534,14 +1548,17 @@ TEL;TYPE=WORK,VOICE:+60854199968
     // ============ COMMITMENT TOUCH FIX (iOS Safari) ============
     document.querySelectorAll('.commitment').forEach(function(card) {
       card.addEventListener('click', function(e) {
-        var isActive = card.classList.contains('active');
-        document.querySelectorAll('.commitment').forEach(function(c) { c.classList.remove('active'); });
-        if (!isActive) card.classList.add('active');
-        e.stopPropagation();
+        var wasActive = card.classList.contains('active');
+        // Let the document-level handler clear all first, then toggle
+        setTimeout(function() {
+          if (!wasActive) card.classList.add('active');
+        }, 0);
       });
     });
-    document.addEventListener('click', function() {
-      document.querySelectorAll('.commitment').forEach(function(c) { c.classList.remove('active'); });
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.commitment')) {
+        document.querySelectorAll('.commitment').forEach(function(c) { c.classList.remove('active'); });
+      }
     });
   })();
   </script>
