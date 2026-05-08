@@ -421,8 +421,10 @@
       -webkit-backdrop-filter: blur(12px);
       text-align: center;
       transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
     }
-    .commitment:hover {
+    /* .active: mobile tap state */
+    .commitment.active {
       transform: translateY(-4px);
       border-color: rgba(212, 175, 55, 0.4);
       box-shadow: var(--shadow-glow);
@@ -437,7 +439,7 @@
       margin-bottom: 0.9rem;
       transition: all 0.3s ease;
     }
-    .commitment:hover .commitment-icon {
+    .commitment.active .commitment-icon {
       background: rgba(212, 175, 55, 0.18);
       box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
       transform: scale(1.05);
@@ -468,9 +470,26 @@
       transition: opacity 0.25s ease, transform 0.25s ease;
       z-index: 5;
     }
-    .commitment:hover .tooltip {
+    .commitment.active .tooltip {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
+    }
+    /* desktop hover: 包在 media query 里，移动端不触发 */
+    @media (hover: hover) {
+      .commitment:hover {
+        transform: translateY(-4px);
+        border-color: rgba(212, 175, 55, 0.4);
+        box-shadow: var(--shadow-glow);
+      }
+      .commitment:hover .commitment-icon {
+        background: rgba(212, 175, 55, 0.18);
+        box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+        transform: scale(1.05);
+      }
+      .commitment:hover .tooltip {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
     }
 
     /* ============ CAR SHOWCASE ============ */
@@ -1496,14 +1515,27 @@
     document.getElementById('year').textContent = new Date().getFullYear();
     renderCars();
 
-    // ============ COMMITMENT TAP (mobile) ============
-    document.querySelectorAll('.commitment').forEach(function(card) {
-      card.addEventListener('click', function() {
-        var isActive = card.classList.contains('active');
-        document.querySelectorAll('.commitment').forEach(function(c) { c.classList.remove('active'); });
-        if (!isActive) card.classList.add('active');
+    // ============ COMMITMENT TAP (mobile toggle) ============
+    (function () {
+      // 仅在无精确 hover 能力的设备（手机/平板）上启用
+      if (window.matchMedia('(hover: hover)').matches) return;
+
+      var cards = document.querySelectorAll('.commitment');
+
+      cards.forEach(function (card) {
+        card.addEventListener('click', function (e) {
+          e.stopPropagation(); // 防止冒泡触发 document 关闭
+          var wasActive = card.classList.contains('active');
+          cards.forEach(function (c) { c.classList.remove('active'); });
+          if (!wasActive) card.classList.add('active'); // toggle
+        });
       });
-    });
+
+      // 点击页面空白处关闭所有
+      document.addEventListener('click', function () {
+        cards.forEach(function (c) { c.classList.remove('active'); });
+      });
+    }());
   })();
   </script>
 </body>
