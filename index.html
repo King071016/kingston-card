@@ -281,7 +281,7 @@
     /* card back */
     .card-back .back-grid {
       display: grid;
-      grid-template-columns: 1fr 96px;
+      grid-template-columns: 1fr 140px;
       gap: 1rem;
       height: 100%;
     }
@@ -302,13 +302,17 @@
     .back-info .row span { line-height: 1.35; word-break: break-word; }
     .back-info .row strong { color: var(--text); font-weight: 500; }
     .qr-wrap {
-      width: 96px; height: 96px;
+      width: 140px; height: 140px;
       align-self: end;
-      padding: 6px;
-      background: #0d0d0d;
-      border: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 8px;
+      background: #ffffff;
+      border: 2px solid rgba(212, 175, 55, 0.6);
       border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
+      /* GPU hint: prevent blur inside rotateY(180deg) face */
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
     .qr-wrap canvas, .qr-wrap img { width: 100% !important; height: 100% !important; }
     .back-title {
@@ -836,7 +840,10 @@
                   </div>
                 </div>
               </div>
-              <div class="qr-wrap" id="qrcode" aria-label="vCard QR code"></div>
+              <div style="align-self:end;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div class="qr-wrap" id="qrcode" aria-label="vCard QR code"></div>
+                <button id="saveContactMiniBtn" style="font-size:0.6rem;letter-spacing:0.05em;color:var(--gold);opacity:0.75;padding:2px 0;background:none;border:none;cursor:pointer;white-space:nowrap;">⬇ Save Contact</button>
+              </div>
             </div>
           </article>
         </div>
@@ -1318,21 +1325,18 @@
     }
 
     // ============ QR CODE ============
+    // vCard kept under 250 chars: FN/ORG/TITLE/TEL/EMAIL only
+    // High correctLevel=H means even with 30% module damage it still scans.
     const vCardData = [
       'BEGIN:VCARD',
       'VERSION:3.0',
-      'FN:Kingston',
-      'N:;Kingston;;;',
+      'FN:Kingston Choo',
       'ORG:Eric Motors Sdn. Bhd.',
       'TITLE:Recond & Used Car Specialist',
-      'TEL;TYPE=CELL,VOICE:+60111601 7673',
-      'TEL;TYPE=WORK,VOICE:+6085419968',
-      'EMAIL;TYPE=INTERNET:YOUR_EMAIL@example.com',
-      'URL:https://wa.me/601116017673',
-      'ADR;TYPE=WORK:;;Lot 2911 Jalan Vinca, Boulevard Commercial Centre;Miri;Sarawak;98000;Malaysia',
-      'NOTE:Recond & Used Cars - Honest disclosure, free inspection, verified only.',
+      'TEL;TYPE=CELL:+60111601 7673',
+      'EMAIL:kingstonchoo7673@gmail.com',
       'END:VCARD'
-    ].join('\n');
+    ].join('\r\n');
 
     function buildQR() {
       const el = document.getElementById('qrcode');
@@ -1340,11 +1344,11 @@
       if (typeof QRCode === 'undefined') return;
       new QRCode(el, {
         text: vCardData,
-        width: 84,
-        height: 84,
-        colorDark: '#d4af37',
-        colorLight: '#0d0d0d',
-        correctLevel: QRCode.CorrectLevel.M
+        width: 256,
+        height: 256,
+        colorDark: '#1a1a1a',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
       });
     }
     if (typeof QRCode !== 'undefined') {
@@ -1354,7 +1358,7 @@
     }
 
     // ============ SAVE CONTACT (vCard download) ============
-    document.getElementById('saveContactBtn').addEventListener('click', () => {
+    function downloadVCard() {
       const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -1365,7 +1369,9 @@
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(url), 500);
       showToast(i18n[currentLang].saved);
-    });
+    }
+    document.getElementById('saveContactBtn').addEventListener('click', downloadVCard);
+    document.getElementById('saveContactMiniBtn').addEventListener('click', downloadVCard);
 
     // ============ COPY LINK ============
     const copyBtn = document.getElementById('copyLinkBtn');
